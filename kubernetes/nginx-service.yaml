@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx # Service name
+  labels:
+    app: nginx # Label for Service
+spec:
+  ports:
+  - name: http # Port name
+    port: 80 # Port on which the Service listens
+    protocol: TCP # Protocol used
+    targetPort: 80 # Port to forward traffic to in the pods
+  selector:
+    app: nginx # Selects pods with label 'app: nginx'
+  type: LoadBalancer # Exposes the Service outside the cluster as a LoadBalancer
