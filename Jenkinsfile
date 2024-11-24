@@ -27,7 +27,7 @@ pipeline {
                     }
 
                     dir('kubernetes-deploy2') {
-                        sh "kubectl apply -k kustomization.yaml ."
+                        sh "kubectl apply -k kustomization ."
                         sh "kubectl apply -f mysql-deployment.yaml"
                         sh "kubectl apply -f wordpress-deployment.yaml"
                     }
