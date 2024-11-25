@@ -22,7 +22,7 @@ resource "aws_eks_node_group" "nacent-node-group-1" {
       max_size = 5
       desired_size = 3
     }
-    #ami_type = data.aws_ami.ubuntu.id
+    
     instance_types = [var.instance_type]
     capacity_type = "ON_DEMAND"
 
@@ -30,11 +30,7 @@ resource "aws_eks_node_group" "nacent-node-group-1" {
       ec2_ssh_key = var.instance_keypair
       source_security_group_ids = [aws_security_group.bastion-sg.id]
     }
-    /*
-    resources {
-        remote_access_security_group_id = aws_security_group.eks-node-ssh-sg.id
-    }
-    */
+   
     update_config {
       max_unavailable = 1
     }

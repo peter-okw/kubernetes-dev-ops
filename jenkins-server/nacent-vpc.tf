@@ -9,15 +9,7 @@ resource "aws_vpc" "nacent-vpc" {
         Name = "nacent-vpc" 
     }
 }
-/*
-## Declar Existing VPC
-data "aws_vpc" "selected" {
-  filter {
-    name = "tag:Name"
-    values = ["dev-vpc"]
-  }
-}
-*/
+
 ## Create Public Subnets
 resource "aws_subnet" "nacent-public-subnet-1" {
   vpc_id = aws_vpc.nacent-vpc.id
@@ -128,22 +120,13 @@ resource "aws_subnet" "nacent-private-subnet-3" {
 ## Create ElasticIP for NAT Gateway
 resource "aws_eip" "nacent-NAT-eip-1" {
 }
-/*
-## Create ElasticIP for NAT Gateway
-resource "aws_eip" "nacent-NAT-eip-2" {
-}
-*/
+
 ## Create NAT Gateway
 resource "aws_nat_gateway" "nacent-NAT-GW-1" {
     allocation_id = aws_eip.nacent-NAT-eip-1.id
     subnet_id = aws_subnet.nacent-public-subnet-1.id
 }
-/*
-resource "aws_nat_gateway" "nacent-NAT-GW-2" {
-    allocation_id = aws_eip.nacent-NAT-eip-2.id
-    subnet_id = aws_subnet.nacent-public-subnet-2.id
-}
-*/
+
 ## Creating Route Table for NAT Traffic
 resource "aws_route_table" "nacent-rt-1" {
     vpc_id = aws_vpc.nacent-vpc.id
@@ -192,44 +175,3 @@ resource "aws_route_table_association" "nacent-rt-private-sbnet-3" {
     subnet_id = "${aws_subnet.nacent-private-subnet-3.id}"
     route_table_id = "${aws_route_table.nacent-rt-3.id}"
 }
-/*
-resource "aws_subnet" "nacent-db-subnet-1" {
-    vpc_id = "${aws_vpc.nacent-vpc.id}"
-    cidr_block = "10.0.151.0/24"
-    availability_zone = "eu-west-2a"
-    tags = {
-       Name = "nacent-db-subnet-1"
-    }
-}
-
-resource "aws_subnet" "nacent-db-subnet-2" {
-    vpc_id = "${aws_vpc.nacent-vpc.id}"
-    cidr_block = "10.0.152.0/24"
-    availability_zone = "eu-west-2b"
-    tags = {
-       Name = "nacent-db-subnet-2"
-    }
-}
-
-## Creating Route Table for DB Access to NAT Traffic
-resource "aws_route_table" "nacent-rt-db" {
-    vpc_id = aws_vpc.nacent-vpc.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_nat_gateway.nacent-NAT-GW-1.id
-    }
-    tags = {
-        Name = "nacent-rt-2"
-    }
-}
-
-resource "aws_route_table_association" "nacent-rt-db-sbnet-1" {
-    subnet_id = "${aws_subnet.nacent-db-subnet-1.id}"
-    route_table_id = "${aws_route_table.nacent-rt-db.id}"
-}
-
-resource "aws_route_table_association" "nacent-rt-db-sbnet-2" {
-    subnet_id = "${aws_subnet.nacent-db-subnet-2.id}"
-    route_table_id = "${aws_route_table.nacent-rt-db.id}"
-}
-*/

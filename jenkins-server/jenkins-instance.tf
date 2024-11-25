@@ -6,7 +6,7 @@ resource "aws_instance" "jenkins-server" {
     subnet_id = aws_subnet.nacent-public-subnet-1.id
     iam_instance_profile = aws_iam_instance_profile.Jenkins-instance-profile.name
     associate_public_ip_address = true
-    user_data = file(tools.sh)
+    user_data = file("tools.sh")
     tags = {
       Name = "jenkins-server"
     }
